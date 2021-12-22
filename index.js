@@ -27,7 +27,6 @@ app.use((req, res, next) => {
 const server = require('http').createServer(app);
 module.exports.io = new Server(server, {
     cors: {
-        origin: ["*"],
         allowedHeaders: ["X-API-KEY"],
         credentials: true
     }
