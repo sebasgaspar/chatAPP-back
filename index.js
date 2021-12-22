@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-var cors = require('cors')
 const { Server } = require("socket.io");
 require('dotenv').config();
 
@@ -16,20 +15,24 @@ const app = express();
 
 //Lectura y parseo del body
 app.use(express.json());
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
 
 // Node Server
 const server = require('http').createServer(app);
 module.exports.io = new Server(server, {
     cors: {
-        origin: ["https://dev.example.com", "https://dev.example.com"],
+        origin: ["*"],
         allowedHeaders: ["X-API-KEY"],
         credentials: true
     }
 });
 require('./sockets/socket');
-
-app.use(cors());
 
 
 // Path público
